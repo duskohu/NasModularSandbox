@@ -1,0 +1,34 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+parameters:
+	themeDir: %appDir%/templates/nasTheme
+
+php:
+	date.timezone: Europe/Prague
+
+nette:
+	application:
+		errorPresenter: Error
+		mapping:
+			*: Nas\*Module\*Presenter
+
+	debugger:
+		bar:
+			- Nette\DI\Diagnostics\ContainerPanel
+
+
+services:
+	- App\RouterFactory
+	router: @App\RouterFactory::createRouter
+
+
+extensions:
+	nasext.modularRouter: NasExt\ModularRouter\DI\ModularRouterExtension
+
+nasext.modularRouter:
+	prefixes: ['Cms:Front' = '' , 'Cms:Admin' = 'admin', 'Gallery:Front' = 'my-gallery']
+	priorities: ['Cms:Front' = 1 , 'Gallery:Front' = 2]
